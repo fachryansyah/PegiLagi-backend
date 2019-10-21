@@ -8,7 +8,7 @@ let knex = require("knex")({
         password: process.env.DB_PASSWORD,
         database: process.env.DB_NAME
     },
-    pool: {min: 0, max: 3}
+    pool: { min: 0, max: 3 }
 })
 
 module.exports = knex
