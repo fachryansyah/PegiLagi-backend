@@ -1,12 +1,12 @@
 require('dotenv').config()
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt")
-const User = require("../Models/User")
+const User = require("../Models/UserModel")
 
 module.exports = {
     /*
     Retrive Authenticated user data
-    @param req.header : authorization
+    @param req.header : authorization 
     @return user data
     */
     user: async (req) => {
@@ -50,7 +50,7 @@ module.exports = {
     attempt: async (credential) => {
 
         let user = await User.query()
-        .findOne({ email: credential.email })
+            .findOne({ email: credential.email })
 
         if (user instanceof User == false) {
             return {
@@ -88,16 +88,14 @@ module.exports = {
     */
     register: async (req) => {
         // getting required fields
-        const { firstname, lastname, email, password } = req.body
+        const { fullname, email, password } = req.body
 
-        const fullname = firstname + " " + lastname
         const hashPassword = await bcrypt.hash(password, 14)
 
         // insert new user to db
         const user = await User.query().insert({
             avatar: "https://ui-avatars.com/api/?size=256&name=" + fullname,
-            firstname,
-            lastname,
+            fullname,
             email,
             password: hashPassword
         })
