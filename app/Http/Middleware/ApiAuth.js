@@ -40,4 +40,4 @@ const ApiAuth = async (req, res, next) => {
     return next()
 }
 
-module.exports = ApiAuth;
+module.exports = ApiAuth
