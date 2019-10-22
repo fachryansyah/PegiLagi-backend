@@ -36,6 +36,27 @@ const HotelController = {
       data: hotel,
       error: false
     })
+  },
+  getHotelDetail: async (req, res) => {
+
+    const hoteldetail = await Hotel.query()
+      .findById(req.params.id)
+
+
+    if (hoteldetail instanceof Hotel == false) {
+      return res.json({
+        message: "HOTEL NOT FOUND",
+        status: 404,
+        error: true
+      })
+    }
+
+    return res.json({
+      message: "OKE",
+      status: 200,
+      data: hoteldetail,
+      error: false
+    })
   }
 }
 
