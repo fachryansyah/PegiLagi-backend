@@ -5,4 +5,4 @@ const SampleController = require("../../app/Http/Controllers/SampleController")
 Router
     .get("/test", SampleController.test)
 
-module.exports = Router;
+module.exports = Router

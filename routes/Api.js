@@ -7,4 +7,4 @@ const AuthRoute = require("./api/AuthRoute")
 Router.use("/auth", AuthRoute)
 Router.use("/sample", SampleRoute)
 
-module.exports = Router;
+module.exports = Router

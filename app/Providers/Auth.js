@@ -11,7 +11,7 @@ module.exports = {
     */
     user: async (req) => {
         // get api key, and set variable decoded
-        let apiKey = req.headers.authorization, decoded;
+        let apiKey = req.headers.authorization, decoded
 
         // check if apiKey is set in header
         if (!apiKey) {
@@ -25,7 +25,7 @@ module.exports = {
         apiKey = apiKey.split(' ')[1]
 
         try {
-            decoded = await jwt.verify(apiKey, process.env.JWT_SECRET);
+            decoded = await jwt.verify(apiKey, process.env.JWT_SECRET)
         } catch (e) {
             return false
         }
@@ -102,9 +102,9 @@ module.exports = {
 
         // check if user has been insert to db
         if (user instanceof User == false) {
-            return false;
+            return false
         }
 
         return true
     },
-};
+}
