@@ -1,4 +1,9 @@
 const PlaneTicket = require('../../Models/PlaneTicketModel')
+const BookingPlanemodel = require('../../Models/BookingPlaneModel')
+const HistoryModel = require('../../Models/HistoryModel')
+const PassangerModel = require('../../Models/PassengerModel')
+const { raw } = require("objection")
+const Auth = require('../../Providers/Auth')
 
 const PlaneTicketController = {
     searchPlaneTicket: async (req, res) => {
@@ -22,6 +27,73 @@ const PlaneTicketController = {
             message: "OKE",
             status: 200,
             data: PlaneTickets,
+            error: false
+        })
+    },
+    orderPlaneTicket: async (req,res) =>{
+
+        const user = await Auth.user(req)
+        let planeTiketId = req.body.plane_ticket_id // get train tiket id
+        let passenger = req.body.passengers// get passanger
+        
+        if(!user){
+            return res.json({
+                message: 'Api key not valid'
+            })
+        }
+
+        const orderTicket = await BookingPlanemodel
+        .query()
+        .insert({
+            order_no:'123456',
+            user_id: user.id,
+            plane_ticket_id: planeTiketId,
+            status: 1
+
+        })
+
+        if(!orderTicket){
+            return res.json({
+                message: "Can't create order",
+                status: 404,
+                error: true
+            })
+        }
+
+        const HistoryorderTicket = await HistoryModel
+        .query()
+        .insert({
+            user_id: user.id,
+            bookinable_id: orderTicket.id,
+            bookinable_type: 'Plane'
+        })
+
+        if(!HistoryorderTicket){
+            return res.json({
+                message: "Can't create order",
+                status: 404,
+                error: true
+            })
+        }
+
+        passenger.forEach(async(obj) => {
+            const Passanger = await PassangerModel
+            .query()
+            .insert({
+                bookinable_id: orderTicket.id,
+                bookinable_type: 'Plane',
+                name: obj.name,
+                titel: obj.titel,
+                identity: obj.identity,
+                identity_no: obj.identity_no
+            })
+        });
+
+
+        return res.json({
+            message: "OKE",
+            status: 200,
+            data: orderTicket,
             error: false
         })
     }
