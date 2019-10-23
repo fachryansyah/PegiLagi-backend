@@ -4,5 +4,6 @@ const TrainTicketController = require("../../app/Http/Controllers/TrainTicketCon
 
 Router
     .get("/", TrainTicketController.getTrainTicket)
+    .post("/order", TrainTicketController.orderTrainTicket)
 
 module.exports = Router
