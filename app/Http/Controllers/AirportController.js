@@ -4,7 +4,6 @@ const AirportController = {
   /*
     Get data airport based on query string
     @method GET
-    @param req.query : pageIndex, limit
     @return Json
     */
   getAirport: async (req, res) => {
