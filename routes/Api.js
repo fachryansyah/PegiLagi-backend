@@ -8,6 +8,7 @@ const TrainTicketRoute = require("./api/TrainTicketRoute")
 const HotelRoute = require("./api/HotelRoute")
 const AirportRoute = require("./api/AirportRoute")
 const StationRoute = require("./api/StationRoute")
+const HistoryRoute = require("./api/HistoryRoute")
 
 Router.use("/auth", AuthRoute)
 Router.use("/plane-ticket", PlaneTicketRoute)
@@ -16,6 +17,7 @@ Router.use("/train-ticket", TrainTicketRoute)
 Router.use("/hotel", HotelRoute)
 Router.use("/airport", AirportRoute)
 Router.use("/station", StationRoute)
+Router.use("/history", HistoryRoute)
 Router.use("/sample", SampleRoute)
 
 module.exports = Router
