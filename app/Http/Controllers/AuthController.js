@@ -1,5 +1,7 @@
 const { validationResult } = require("express-validator")
 const Auth = require("../../Providers/Auth")
+const bcrypt = require("bcrypt")
+const UserModel = require("../../Models/UserModel")
 
 const AuthController = {
     /*
@@ -82,7 +84,80 @@ const AuthController = {
             data: {},
             errors: false
         })
+    },
+    /*
+    Register user
+    @param req.body : current password, new password, confirm password
+    @return Json
+    */
+   resetPassword: async (req, res) => {
+
+    const errors = validationResult(req)
+        if (!errors.isEmpty()) {
+            return res.json({
+                message: "Validation error",
+                status: 304,
+                data: {},
+                errors: errors.array()
+            })
+        }
+
+    const user = await Auth.user(req)
+    let currentPassword = req.body.current_password
+    let newPassword = req.body.new_password
+    let confirmPassword = req.body.confirm_password
+
+    if(!user){
+        return res.json({
+            message: 'Api key not valid'
+        })
     }
+
+    const userId = await UserModel.query()
+      .findById(user.id)
+
+
+    if (userId instanceof UserModel == false) {
+      return res.json({
+        message: "USER NOT FOUND",
+        status: 404,
+        error: true
+      })
+    }
+
+    const isPasswordMatch = await bcrypt.compare(currentPassword, userId.password)
+
+    if (!isPasswordMatch) {
+        return res.json({
+            message: "Wrong password",
+            error: true
+        })    
+    }
+
+    if (newPassword != confirmPassword) {
+        return res.json({
+            message: "Confirm passwords do not match",
+            error: true
+        })
+    }
+
+    const hashPassword = await bcrypt.hash(newPassword, 14)
+
+    const passwordUpdated = await UserModel.query()
+    .findById(userId.id)
+    .patch({
+    password: hashPassword
+    })
+
+    return res.json({
+        message: "OKE",
+        status: 200,
+        data: userId,
+        newPassword: passwordUpdated,
+        confirmPassword: confirmPassword,
+        errors: false
+    })
+}
 }
 
 module.exports = AuthController
