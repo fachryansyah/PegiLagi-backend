@@ -1,4 +1,5 @@
 const HistoryModel = require("../../Models/HistoryModel")
+const BookingPlane = require("../../Models/BookingPlaneModel")
 const { raw } = require("objection")
 const Auth = require('../../Providers/Auth')
 
@@ -13,13 +14,24 @@ const HistoryController = {
 
     const user = await Auth.user(req)
 
-    const history = await HistoryModel.query()
-      .findOne({
-          user_id: user.id
-      })
+    const histories = await HistoryModel.query()
+    .where("user_id", user.id)
 
+    let data = []
 
-    if (history instanceof HistoryModel == false) {
+    await HistoryController.asyncForEach(histories, async (val, key) => {
+      let history = val.toJSON()
+      
+      if (history.bookinable_type == "Plane") {
+        let bookingPlane = await BookingPlane.query()
+        .where("user_id", history.user_id)
+        .where("id", history.bookinable_id)
+        .eager("[planeTicket.*]")
+        data.push(bookingPlane)
+      }
+    })
+
+    if (!histories) {
       return res.json({
         message: "HISTORY NOT FOUND",
         status: 404,
@@ -30,10 +42,15 @@ const HistoryController = {
     return res.json({
       message: "OKE",
       status: 200,
-      data: history,
+      data: data,
       error: false
     })
   },
+  asyncForEach: async (array, callback) => {
+    for (let index = 0; index < array.length; index++) {
+      await callback(array[index], index, array);
+    }
+  }
   
 }
 
