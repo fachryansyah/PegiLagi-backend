@@ -110,6 +110,53 @@ const TrainTicketController = {
             data: HistoryorderTicket,
             error: false
         })
+    },
+
+    
+    createTrainTicket: async (req,res) =>{
+
+        const user = await Auth.user(req)
+        let trainId = req.body.train_id // get train id
+        let fromStationId = req.body.from_station_id// get from station
+        let toStationId = req.body.to_station_id// get to station
+        let trainClass = req.body.train_class// get train class
+        let price = req.body.price// get price
+        let departureTime = req.body.departure_time// get departure time
+        let arrivedTime = req.body.arrived_time// get departure arrived time
+        
+        if(!user){
+            return res.json({
+                message: 'Api key not valid'
+            })
+        }
+
+        const createTicket = await TrainTicket
+        .query()
+        .insert({
+            train_id:trainId,
+            from_station_id: fromStationId,
+            to_station_id: toStationId,
+            class: trainClass,
+            price: price,
+            departure_time: departureTime,
+            arrived_time: arrivedTime
+
+        })
+
+        if(!createTicket){
+            return res.json({
+                message: "Can't create tiket",
+                status: 404,
+                error: true
+            })
+        }
+
+        return res.json({
+            message: "OKE",
+            status: 200,
+            data: createTicket,
+            error: false
+        })
     }
 }
 
