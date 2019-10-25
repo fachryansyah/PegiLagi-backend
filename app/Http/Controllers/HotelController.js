@@ -1,5 +1,8 @@
 const Hotel = require("../../Models/HotelModel")
+const Image = require('../../Providers/Image')
 const BookingHotelModel = require("../../Models/BookingHotelModel")
+const ImageHotelModel = require('../../Models/ImageHotelModel')
+const FacilityModel = require("../../Models/FacilityModel")
 const HistoryModel = require('../../Models/HistoryModel')
 const GuestModel = require('../../Models/GuestModel')
 const { raw } = require("objection")
@@ -127,6 +130,105 @@ const HotelController = {
         message: "OKE",
         status: 200,
         data: HistorybookingHotel,
+        error: false
+    })
+},
+
+createHotel: async (req,res) =>{
+
+  const user = await Auth.user(req)
+  let name = req.body.name // get name hotel
+  let city = req.body.city// get city
+  let price = req.body.price// get price
+  let description = req.body.description// get description
+  let latitude = req.body.latitude// get latitude
+  let longitude = req.body.longitude// get longitude
+  let facilities = req.body.facilities// get facilities
+
+  
+  if(!user){
+      return res.json({
+          message: 'Api key not valid'
+      })
+  }
+
+  const addHotel = await Hotel
+  .query()
+  .insert({
+      name:name,
+      city: city,
+      price: price,
+      description: description,
+      latitude: latitude,
+      longitude: longitude
+  })
+
+  if(!addHotel){
+      return res.json({
+          message: "Can't create hotel",
+          status: 404,
+          error: true
+      })
+  }
+  
+  facilities.forEach(async(obj)=>{
+    const facility = await FacilityModel
+    .query()
+    .insert({
+      hotel_id: addHotel.id,
+      name:obj.name,
+      icon:obj.icon
+    })
+  })
+
+  return res.json({
+      message: "OKE",
+      status: 200,
+      data: addHotel,
+      error: false
+  })
+},
+    /*
+    Create data Image Hotel based on query string
+    @method POST Image
+    @param req.query : title, url
+    @return Json
+    */
+    
+   createImageHotel: async (req,res) =>{
+    // const user = await Auth.user(req)
+    let hotelId = req.body.hotel_id // get hotel_id
+    const image = await Image.upload(req) //get image upload
+
+    // if(!user){
+    //     return res.json({
+    //         message: 'Api key not valid'
+    //     })
+    // }
+
+    console.log(hotelId)
+    console.log(image)
+
+    // const addImageHotel = await ImageHotelModel
+    // .query()
+    // .insert({
+    //     hotel_id:hotelId,
+    //     image: image.url
+
+    // })
+
+    // if(!addImageHotel){
+    //     return res.json({
+    //         message: "Can't create prmotion",
+    //         status: 404,
+    //         error: true
+    //     })
+    // }
+
+    return res.json({
+        message: "OKE",
+        status: 200,
+        // data: addImageHotel,
         error: false
     })
 }

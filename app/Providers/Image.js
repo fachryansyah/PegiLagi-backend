@@ -10,7 +10,6 @@ cloudinary.config({
 
 module.exports = {
     upload: async (req) => {
-        console.log(process.env.CLOUDINARY_API_KEY)
         if (req.file) {
             const file = dataUri(req).content
 
