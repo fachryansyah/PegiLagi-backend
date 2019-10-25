@@ -6,5 +6,6 @@ Router
     .get("/search", PlaneTicketController.searchPlaneTicket)
     .post("/order", PlaneTicketController.orderPlaneTicket)
     .post("/create", PlaneTicketController.createPlaneTicket)
+    .post("/update", PlaneTicketController.updateStatusPlaneTicket)
 
 module.exports = Router
