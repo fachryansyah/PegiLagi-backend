@@ -1,5 +1,5 @@
 require('dotenv').config()
-const User = require("../../Models/User")
+const User = require("../../Models/UserModel")
 const jwt = require("jsonwebtoken")
 
 const ApiAuth = async (req, res, next) => {
