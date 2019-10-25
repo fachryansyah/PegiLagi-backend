@@ -7,7 +7,26 @@ const Notification = require('../../Providers/Notification')
 const ArticlesController = {
     /*
     Get data Articles based on query string
-    @method GET
+    @method GET Promotion
+    @return Json
+    */
+    
+   getPromotion: async (req, res) => {
+
+    const prmotion = await ArticlesModel.query()
+      .where("category", "Promotion")
+
+    return res.json({
+      message: "OKE",
+      status: 200,
+      data: prmotion,
+      error: false
+    })
+  },
+
+  /*
+    Get data Articles based on query string
+    @method POST Promotion
     @param req.query : title, url
     @return Json
     */
@@ -17,9 +36,6 @@ const ArticlesController = {
         let titlePromotion = req.body.title // get titel promotion
         let urlPromotion  = req.body.url// get url prmotion
         const image = await Image.upload(req) //get image upload
-        
-        console.log(req.body.title)
-        console.log(req.body.url)
 
         if(!user){
             return res.json({

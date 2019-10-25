@@ -4,6 +4,7 @@ const ArticlesController = require("../../app/Http/Controllers/ArticlesControlle
 
 const {multerUploads} = require("../../app/Http/Middleware/Multer")
 
-Router.post("/create", multerUploads, ArticlesController.createPromotion)
+Router.get("/promotion", ArticlesController.getPromotion)
+Router.post("/prmotion/create", multerUploads, ArticlesController.createPromotion)
 
 module.exports = Router
