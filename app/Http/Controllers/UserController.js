@@ -8,7 +8,8 @@ getUser: async (req,res) => {
 
     if (!user) {
         return res.json({
-            message: 'Api key not valid'
+            message: 'Api key not valid',
+            status: 304
         })
     }
 
