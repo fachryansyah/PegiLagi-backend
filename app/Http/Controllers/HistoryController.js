@@ -21,14 +21,14 @@ const HistoryController = {
 
     await HistoryController.asyncForEach(histories, async (val, key) => {
       let history = val.toJSON()
-      
+      let bookingPlane
       if (history.bookinable_type == "Plane") {
-        let bookingPlane = await BookingPlane.query()
+        bookingPlane = await BookingPlane.query()
         .where("user_id", history.user_id)
         .where("id", history.bookinable_id)
         .eager("[planeTicket.*]")
-        data.push(bookingPlane)
       }
+      data.push(bookingPlane[0])
     })
 
     if (!histories) {
