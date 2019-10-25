@@ -5,5 +5,6 @@ const PlaneTicketController = require("../../app/Http/Controllers/PlaneTicketCon
 Router
     .get("/search", PlaneTicketController.searchPlaneTicket)
     .post("/order", PlaneTicketController.orderPlaneTicket)
+    .post("/create", PlaneTicketController.createPlaneTicket)
 
 module.exports = Router
