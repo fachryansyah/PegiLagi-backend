@@ -112,6 +112,43 @@ const TrainTicketController = {
         })
     },
 
+    updateStatusTrainTicket: async (req,res) =>{
+
+        const user = await Auth.user(req)
+        const Status = req.body.order_status
+        let bookingId = req.body.booking_id // get booking id
+        
+        if(!user){
+            return res.json({
+                message: 'Api key not valid',
+                status: 304
+            })
+        }
+        
+        const orderTicket = await BookingTrainmodel
+        .query()
+        .where("user_id",user.id)
+        .where("id",bookingId)
+        .patch({
+            status: Status
+        })
+
+        if(!orderTicket){
+            return res.json({
+                message: "Can't update order",
+                status: 404,
+                error: true
+            })
+        }
+
+        return res.json({
+            message: "OKE",
+            status: 200,
+            data: orderTicket,
+            error: false
+        })
+    },
+
     
     createTrainTicket: async (req,res) =>{
 
