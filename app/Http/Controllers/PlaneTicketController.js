@@ -96,6 +96,52 @@ const PlaneTicketController = {
             data: orderTicket,
             error: false
         })
+    },
+
+    createPlaneTicket: async (req,res) =>{
+
+        const user = await Auth.user(req)
+        let planeId = req.body.plane_id // get plane id
+        let fromAirportId = req.body.from_airport_id// get from airport
+        let toAirportId = req.body.to_airport_id// get to airport
+        let baggage = req.body.baggage// get plane baggage
+        let price = req.body.price// get price
+        let departureTime = req.body.departure_time// get departure time
+        let arrivedTime = req.body.arrived_time// get departure arrived time
+        
+        if(!user){
+            return res.json({
+                message: 'Api key not valid'
+            })
+        }
+
+        const createTicket = await PlaneTicket
+        .query()
+        .insert({
+            plane_id:planeId,
+            from_airport_id: fromAirportId,
+            to_airport_id: toAirportId,
+            baggage: baggage,
+            price: price,
+            departure_time: departureTime,
+            arrived_time: arrivedTime
+
+        })
+
+        if(!createTicket){
+            return res.json({
+                message: "Can't create tiket",
+                status: 404,
+                error: true
+            })
+        }
+
+        return res.json({
+            message: "OKE",
+            status: 200,
+            data: createTicket,
+            error: false
+        })
     }
 }
 
