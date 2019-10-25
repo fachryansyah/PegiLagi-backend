@@ -10,6 +10,7 @@ const AirportRoute = require("./api/AirportRoute")
 const StationRoute = require("./api/StationRoute")
 const HistoryRoute = require("./api/HistoryRoute")
 const ArticleRoute = require("./api/ArticleRoute")
+const UserRoute = require("./api/UserRoute")
 
 Router.use("/auth", AuthRoute)
 Router.use("/plane-ticket", PlaneTicketRoute)
@@ -20,6 +21,7 @@ Router.use("/airport", AirportRoute)
 Router.use("/station", StationRoute)
 Router.use("/history", HistoryRoute)
 Router.use("/article", ArticleRoute)
+Router.use("/user", UserRoute)
 Router.use("/sample", SampleRoute)
 
 module.exports = Router
