@@ -29,7 +29,7 @@
     "knex": "^0.19.5",
     "knex-paginator": "^2.0.0",
     "moment": "^2.24.0",
-    "moment-timezone": "^0.5.27",
+    "moment-timezone": "^0.5.35",
     "mysql": "^2.17.1",
     "objection": "^1.6.11"
   }
